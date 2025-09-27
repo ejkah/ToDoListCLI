@@ -1,0 +1,114 @@
+# import sys
+
+# if len(sys.argv) > 1:
+#     print(f"Hello, {sys.argv[1]}!")
+# else:
+#     print("Please provide a name as an argument.")
+
+from datetime import date
+
+
+def todo_list_menu():
+    print("-------------")
+    print("Enter number to select option: ")
+    print("-------------")
+    print("1) Add item to todo list")
+    print("2) List items in todo list")
+    print("3) View current todo item")
+    print("4) Delete current item")
+    print("5) Delete specific item")
+    print("6) Set specific item to complete")
+    print("7) Exit program")
+
+    print(" ")
+
+
+def display_todo_list():
+    print("Todo List - " + str(today))
+    print("-------------------------")
+    n = 0
+    while n < len(todo_list):
+        print(str(n + 1) + ". " + str(todo_list[n]))
+        n += 1
+
+
+def add_whitespace():
+    print(" ")
+    print(" ")
+
+
+enter_loop = True
+todo_list = []
+today = date.today()
+
+print(" ")
+print("To Do List")  # Add date here
+print(" ")
+
+while enter_loop:
+
+    todo_list_menu()
+    selection = input()
+
+    if selection == '1':
+        add_whitespace()
+        print("Enter item in todo list: ")
+        item = input()
+        todo_list.append(item)
+        add_whitespace()
+
+    elif selection == '2':
+        add_whitespace()
+        display_todo_list()
+        add_whitespace()
+
+    elif selection == '3':
+        add_whitespace()
+        print(todo_list[0])
+        add_whitespace()
+
+    elif selection == '4':
+        add_whitespace()
+        todo_list.pop(0)
+        display_todo_list()
+        add_whitespace()
+
+    elif selection == '5':
+        add_whitespace()
+        display_todo_list()
+        print(" ")  # Refactor add_whitespace method to take in int param to customize how many white space to add
+        print("Enter number of item to delete: ")
+        item_number = input()
+        todo_list.pop(int(item_number) - 1)
+        print(" ")
+        display_todo_list()
+        add_whitespace()
+
+    elif selection == '6':
+        add_whitespace()
+        display_todo_list()
+        print(" ")  # Refactor add_whitespace method to take in int param to customize how many white space to add
+        print("Enter number of item to set complete: ")
+        item_number = input()  # 1
+
+        n = 0
+        while n < len(todo_list):
+            if n == (int(item_number) - 1):
+                todo_list[int(item_number) - 1] = todo_list[int(item_number) - 1] + " - COMPLETE"
+                break
+            n += 1
+
+        print(" ")
+        display_todo_list()
+        add_whitespace()
+
+    elif selection == '7':
+        add_whitespace()
+        print("Exiting program.")
+        add_whitespace()
+        enter_loop = False
+
+    else:
+        add_whitespace()
+        print("Select one of the given options.")
+        add_whitespace()
