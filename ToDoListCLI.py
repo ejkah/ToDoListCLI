@@ -37,9 +37,17 @@ def add_whitespace():
     print(" ")
 
 
+def read_file():
+    with open("/Users/ec/PycharmProjects/pythonToDoListCLI/ToDoLists/testlist.txt") as f:
+        for x in f:
+            todo_list.append(x)
+
+
+# put read file data in todo_list
 enter_loop = True
 todo_list = []
 today = date.today()
+read_file()
 
 print(" ")
 print("To Do List")  # Add date here
