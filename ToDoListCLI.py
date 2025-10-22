@@ -40,7 +40,14 @@ def add_whitespace():
 def read_file():
     with open("/Users/ec/PycharmProjects/pythonToDoListCLI/ToDoLists/testlist.txt") as f:
         for x in f:
-            todo_list.append(x)
+            stripped = x.strip()
+            if stripped:
+                todo_list.append(stripped)
+
+
+def write_to_file(todo_item):
+    with open("/Users/ec/PycharmProjects/pythonToDoListCLI/ToDoLists/testlist.txt", "a") as f:
+        f.write(todo_item + "\n")
 
 
 # put read file data in todo_list
@@ -63,6 +70,8 @@ while enter_loop:
         print("Enter item in todo list: ")
         item = input()
         todo_list.append(item)
+        # write to file
+        write_to_file(item)
         add_whitespace()
 
     elif selection == '2':
@@ -78,6 +87,7 @@ while enter_loop:
     elif selection == '4':
         add_whitespace()
         todo_list.pop(0)
+        # how to delete first item in file?
         display_todo_list()
         add_whitespace()
 
