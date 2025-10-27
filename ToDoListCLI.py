@@ -46,9 +46,9 @@ def add_whitespace():
 #                 todo_list.append(stripped)
 
 
-def write_to_file(todo_item):
-    with open("/Users/ec/PycharmProjects/pythonToDoListCLI/ToDoLists/testlist.txt", "a") as f:
-        f.write(todo_item + "\n")
+# def write_to_file(todo_item):
+#     with open("/Users/ec/PycharmProjects/pythonToDoListCLI/ToDoLists/testlist.txt", "a") as f:
+#         f.write(todo_item + "\n")
 
 
 def read_from_db():
@@ -66,27 +66,18 @@ def read_from_db():
 
 
 def write_to_db(todo_item):
+    # Add todo_item into db
     conn = sqlite3.connect('todolist.db')
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO tdl VALUES (todo_item)")
+    cursor.execute("INSERT INTO tdl (to_do_item) VALUES (?)", (todo_item,))
     conn.commit()
     conn.close()
 
 
-# put read file data in todo_list
 enter_loop = True
 todo_list = []
 today = date.today()
-#read_file()
 read_from_db()
-
-# sqliteConnection = sqlite3.connect('todolist.db')
-# cursor = sqliteConnection.cursor()
-# query = 'SELECT sqlite_version();'
-# cursor.execute(query)
-# result = cursor.fetchall()
-# print('SQLite Version is {}'.format(result[0][0]))
-# cursor.close()
 
 print(" ")
 print("To Do List")  # Add date here
@@ -101,9 +92,10 @@ while enter_loop:
         add_whitespace()
         print("Enter item in todo list: ")
         item = input()
-        todo_list.append(item)
         # write to file
-        write_to_file(item)
+        write_to_db(item)
+        # append to list
+        todo_list.append(item)
         add_whitespace()
 
     elif selection == '2':
