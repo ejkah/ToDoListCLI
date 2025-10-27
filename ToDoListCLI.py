@@ -6,6 +6,7 @@
 #     print("Please provide a name as an argument.")
 
 from datetime import date
+import sqlite3
 
 
 def todo_list_menu():
@@ -37,12 +38,12 @@ def add_whitespace():
     print(" ")
 
 
-def read_file():
-    with open("/Users/ec/PycharmProjects/pythonToDoListCLI/ToDoLists/testlist.txt") as f:
-        for x in f:
-            stripped = x.strip()
-            if stripped:
-                todo_list.append(stripped)
+# def read_file():
+#     with open("/Users/ec/PycharmProjects/pythonToDoListCLI/ToDoLists/testlist.txt") as f:
+#         for x in f:
+#             stripped = x.strip()
+#             if stripped:
+#                 todo_list.append(stripped)
 
 
 def write_to_file(todo_item):
@@ -50,11 +51,42 @@ def write_to_file(todo_item):
         f.write(todo_item + "\n")
 
 
+def read_from_db():
+    conn = sqlite3.connect('todolist.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT to_do_item from tdl")
+    output = cursor.fetchall()
+    for to_do_item in output:
+        tuple_to_string = str(to_do_item)
+        stripped_to_do_item = tuple_to_string.strip("('',)")
+        todo_list.append(stripped_to_do_item)
+
+    conn.commit()
+    conn.close()
+
+
+def write_to_db(todo_item):
+    conn = sqlite3.connect('todolist.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO tdl VALUES (todo_item)")
+    conn.commit()
+    conn.close()
+
+
 # put read file data in todo_list
 enter_loop = True
 todo_list = []
 today = date.today()
-read_file()
+#read_file()
+read_from_db()
+
+# sqliteConnection = sqlite3.connect('todolist.db')
+# cursor = sqliteConnection.cursor()
+# query = 'SELECT sqlite_version();'
+# cursor.execute(query)
+# result = cursor.fetchall()
+# print('SQLite Version is {}'.format(result[0][0]))
+# cursor.close()
 
 print(" ")
 print("To Do List")  # Add date here
@@ -84,6 +116,7 @@ while enter_loop:
         print(todo_list[0])
         add_whitespace()
 
+    # TODO: selection 4 and 5 are not updating the text file. Add db.
     elif selection == '4':
         add_whitespace()
         todo_list.pop(0)
