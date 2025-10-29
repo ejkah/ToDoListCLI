@@ -74,6 +74,30 @@ def write_to_db(todo_item):
     conn.close()
 
 
+def delete_item(index_number):
+    conn = sqlite3.connect('todolist.db')
+    conn.executescript("""
+    BEGIN TRANSACTION;
+
+    CREATE TABLE tdl_new AS
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY id) AS id,
+        to_do_item
+    FROM tdl;
+
+    DROP TABLE tdl;
+    ALTER TABLE tdl_new RENAME TO tdl;
+    
+    COMMIT;
+
+    """)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM tdl WHERE id = ?", (index_number,))
+
+    conn.commit()
+    conn.close()
+
+
 enter_loop = True
 todo_list = []
 today = date.today()
@@ -122,8 +146,11 @@ while enter_loop:
         print(" ")  # Refactor add_whitespace method to take in int param to customize how many white space to add
         print("Enter number of item to delete: ")
         item_number = input()
-        todo_list.pop(int(item_number) - 1)
+        int_number = int(item_number)
+        # TODO: pop index out of range error
+        popped_item = todo_list.pop(int_number - 1)
         print(" ")
+        delete_item(int_number)
         display_todo_list()
         add_whitespace()
 
